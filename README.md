@@ -32,7 +32,3 @@ game.js      全部遊戲邏輯(canvas 渲染、物理、碰撞、武器)
 ## 執行
 
 直接雙擊 `index.html`,或:
-
-```
-U:/GoogleChromePortable64/GoogleChromePortable.exe file:///C:/Users/chair/block-shooter/index.html
-```
