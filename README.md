@@ -32,3 +32,5 @@ game.js      全部遊戲邏輯(canvas 渲染、物理、碰撞、武器)
 ## 執行
 
 直接雙擊 `index.html`,或:
+
+https://charles886.github.io/block-shooter/index.html
