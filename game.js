@@ -25,6 +25,7 @@ let ebullets = [];     // 敵方子彈
 let enemies = [];      // 敵方方塊
 let particles = [];    // 爆炸粒子
 const mouse = { x: W / 2, y: H / 4, down: false };
+const touch = { active: false }; // 觸控中（單指）：玩家跟隨並自動開火
 const keys = {};
 // 武器 / 掉落 / 暫停
 let paused = false;
@@ -54,6 +55,32 @@ window.addEventListener('keydown', e => {
   keys[e.key.toLowerCase()] = true;
 });
 window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+// ---------- 觸控（手機） ----------
+function canvasPoint(e) {
+  const r = canvas.getBoundingClientRect();
+  const t = e.touches[0] || e.changedTouches[0];
+  return { x: (t.clientX - r.left) * (W / r.width), y: (t.clientY - r.top) * (H / r.height) };
+}
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  if (e.touches.length > 1) return;      // 多指：不處理
+  const p = canvasPoint(e);
+  mouse.x = p.x; mouse.y = p.y;
+  touch.active = true;                    // 開始跟隨 + 自動開火
+}, { passive: false });
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (e.touches.length > 1) return;
+  const p = canvasPoint(e);
+  mouse.x = p.x; mouse.y = p.y;
+}, { passive: false });
+const touchEnd = e => {
+  e.preventDefault();
+  if (e.touches.length === 0) touch.active = false; // 放開：停止開火
+};
+canvas.addEventListener('touchend', touchEnd, { passive: false });
+canvas.addEventListener('touchcancel', touchEnd, { passive: false });
 
 // ---------- 玩家 ----------
 function playerFire() {
@@ -93,7 +120,7 @@ function updatePlayer(dt) {
   player.y = Math.max(14, Math.min(H - 14, player.y));
 
   player.fireCd -= dt;
-  if (mouse.down && player.fireCd <= 0) {
+  if ((mouse.down || touch.active) && player.fireCd <= 0) {
     playerFire();
     player.fireCd = (power.type && WEAPONS[power.type].cd) || 0.16;
   }

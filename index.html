@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>方塊射擊 - Block Shooter</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,6 +16,10 @@
     min-height: 100vh;
     justify-content: center;
     gap: 12px;
+    padding: 10px;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
   h1 { font-size: 20px; font-weight: 600; color: #58a6ff; }
   #hud {
@@ -35,6 +39,10 @@
     border-radius: 8px;
     cursor: crosshair;
     display: block;
+    width: 100%;
+    max-width: 960px;
+    height: auto;
+    touch-action: none;
   }
   #overlay {
     position: absolute;
@@ -68,6 +76,11 @@
   #leaderboard th, #leaderboard td { padding:4px 10px; border-bottom:1px solid #30363d; text-align:left; }
   #leaderboard th { color:#8b949e; font-weight:600; }
   #leaderboard tr.me td { color:#58a6ff; font-weight:700; }
+  @media (max-width: 640px) {
+    h1 { font-size:16px; }
+    #hud { font-size:13px; gap:10px; padding:8px 10px; }
+    .hud-item b { font-size:16px; }
+  }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -85,8 +98,8 @@
     <div id="overlay">
       <h2 id="ov-title">方塊射擊</h2>
       <p id="ov-text">
-        滑鼠移動 — 操控方塊<br>
-        點擊 / 長按 — 射擊紅色敵方方塊<br>
+        桌面：滑鼠移動 — 操控方塊，按住左鍵 — 射擊<br>
+        手機：單指按住並拖曳 — 移動並自動射擊<br>
         躲開敵方子彈，撐過每一波<br>
         空白鍵 — 暫停 &nbsp;·&nbsp; 撿取彩色掉落方塊可獲得武器
       </p>
